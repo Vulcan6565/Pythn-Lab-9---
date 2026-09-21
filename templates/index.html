@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reading List — Lab 9</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+    <p>Python Lab №9 · Variant 6</p>
+    <h1>My Reading List</h1>
+    <span>Denis Novikov-Ahbabovic</span>
+</header>
+
+<main>
+    <section class="panel">
+        <h2>Add a book</h2>
+        <form action="{{ url_for('add_book') }}" method="POST" class="add-form">
+            <div>
+                <label for="author">Author</label>
+                <input id="author" name="author" type="text" placeholder="Author" required>
+            </div>
+            <div>
+                <label for="name">Book title</label>
+                <input id="name" name="name" type="text" placeholder="Book title" required>
+            </div>
+            <button type="submit">Add book</button>
+        </form>
+    </section>
+
+    <section class="panel">
+        <div class="top-row">
+            <div>
+                <h2>Books I've read</h2>
+                <p>{{ books|length }} books in the database</p>
+            </div>
+            <div class="buttons">
+                <form action="{{ url_for('restore_books') }}" method="POST">
+                    <button class="secondary" type="submit">Restore sample list</button>
+                </form>
+                <form action="{{ url_for('clear_books') }}" method="POST"
+                      onsubmit="return confirm('Clear the entire list?');">
+                    <button class="danger" type="submit">Clear</button>
+                </form>
+            </div>
+        </div>
+
+        {% if books %}
+            {% for book in books %}
+            <article class="book">
+                <div class="number">{{ loop.index }}</div>
+                <div>
+                    <h3><em>{{ book.name }}</em></h3>
+                    <p>{{ book.author }}</p>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="empty">
+                <h3>The list is empty</h3>
+                <p>Add a new book or restore the sample list.</p>
+            </div>
+        {% endif %}
+    </section>
+</main>
+
+<footer>Flask + Flask-SQLAlchemy · Lab 9</footer>
+</body>
+</html>
